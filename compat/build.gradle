@@ -1,0 +1,15 @@
+//file:noinspection GroovyAssignabilityCheck
+//file:noinspection DependencyNotationArgument
+dependencies {
+	implementation project(path: ":core", configuration: "namedElements")
+	implementation project(path: ":client", configuration: "namedElements")
+	implementation libs.kaleidoConfig
+	modImplementation libs.fapi
+
+	modCompileOnly libs.fabrictailor
+	modCompileOnly libs.fabrication
+	modCompileOnly libs.placeholder
+	modCompileOnly libs.styledNicknames
+	modCompileOnly libs.luaj
+	modCompileOnly libs.cardinal
+}

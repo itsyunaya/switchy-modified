@@ -1,0 +1,10 @@
+{
+	"default": true,
+	"editable": "ALLOWED",
+	"ifModsLoaded": [
+		"hexcasting"
+	],
+	"components": [
+		"hexcasting:favored_pigment"
+	]
+}

@@ -1,0 +1,83 @@
+package folk.sisby.switchy.client.api;
+
+import folk.sisby.switchy.util.Feedback;
+import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtByte;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtDouble;
+import net.minecraft.nbt.NbtFloat;
+import net.minecraft.nbt.NbtInt;
+import net.minecraft.nbt.NbtLong;
+import net.minecraft.nbt.NbtOps;
+import net.minecraft.nbt.NbtShort;
+import net.minecraft.nbt.NbtString;
+import net.minecraft.nbt.visitor.NbtElementVisitor;
+import net.minecraft.nbt.visitor.NbtTextFormatter;
+import net.minecraft.registry.Registries;
+import net.minecraft.text.MutableText;
+import net.minecraft.text.Text;
+import net.minecraft.text.TextCodecs;
+import net.minecraft.util.Formatting;
+import net.minecraft.util.Identifier;
+
+public class PrettyElementVisitor extends NbtTextFormatter implements NbtElementVisitor {
+	public PrettyElementVisitor() {
+		super("");
+	}
+
+	@Override
+	public void visitString(NbtString element) {
+		try {
+			this.result = TextCodecs.CODEC.decode(NbtOps.INSTANCE, element).getOrThrow().getFirst().copy().formatted(Formatting.GREEN);
+			return;
+		} catch (Exception ignored) {
+		}
+		var i = Registries.ITEM.get(Identifier.tryParse(element.asString().orElseGet(String::new)));
+		this.result = Feedback.translatable(i.getTranslationKey()).formatted(Formatting.AQUA);
+	}
+
+	@Override
+	public void visitByte(NbtByte element) {
+		this.result = Feedback.literal(String.valueOf(element.byteValue() == 0 ? "no" : (element.byteValue() == 1 ? "yes" : element.numberValue()))).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitShort(NbtShort element) {
+		this.result = Feedback.literal(String.valueOf(element.numberValue())).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitInt(NbtInt element) {
+		this.result = Feedback.literal(String.valueOf(element.numberValue())).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitLong(NbtLong element) {
+		this.result = Feedback.literal(String.valueOf(element.numberValue())).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitFloat(NbtFloat element) {
+		this.result = Feedback.literal(String.valueOf(element.floatValue())).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitDouble(NbtDouble element) {
+		this.result = Feedback.literal(String.valueOf(element.doubleValue())).formatted(Formatting.GOLD);
+	}
+
+	@Override
+	public void visitCompound(NbtCompound compound) {
+		try {
+			ItemStack stack = ItemStack.CODEC.decode(NbtOps.INSTANCE, compound).getOrThrow().getFirst();
+			MutableText text = Text.empty();
+			if (stack.getCount() > 1) text.append(Feedback.literal(stack.getCount() + " "));
+			text.append(stack.getName());
+			text.formatted(Formatting.AQUA);
+			this.result = text;
+			return;
+		} catch (Exception ignored) {
+		}
+		super.visitCompound(compound);
+	}
+}

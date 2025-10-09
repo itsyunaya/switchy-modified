@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "${modId}",
+	"version": "${version}",
+	"name": "${modName}",
+	"description": "${modDescription}",
+	"authors": [
+		"${authors}"
+	],
+	"contributors": [
+		"${contributors}"
+	],
+	"contact": {
+		"homepage": "${homepage}",
+		"issues": "${issues}",
+		"sources": "${sources}"
+	},
+	"license": "${license}",
+	"icon": "assets/${modId}/icon.png",
+	"depends": {
+		"minecraft": ">=${mc}",
+		"fabricloader": ">=${fl}",
+		"fabric-api": ">=${fapi}",
+		"${coreId}": "${version}",
+		"${clientId}": "${version}",
+		"${uiId}": "${version}",
+		"${compatId}": "${version}",
+		"${compatUiId}": "${version}",
+		"${cardinalId}": "${version}",
+		"${cardinalUiId}": "${version}"
+	}
+}
