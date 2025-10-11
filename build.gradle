@@ -16,7 +16,7 @@ allprojects {
 	archivesBaseName = project == rootProject ? slug : "${slug}-${project.name}"
 
 	repositories {
-		mavenLocal()
+		mavenCentral()
 		maven { url "https://maven.fabricmc.net/" }
 
 		maven { url "https://repo.sleeping.town/" }
@@ -39,6 +39,8 @@ allprojects {
 		minecraft libs.mc
 		mappings variantOf(libs.yarn) { classifier "v2" }
 		modImplementation libs.fl
+
+		modImplementation('me.lucko:fabric-permissions-api:0.3.3')
 	}
 
 	processResources {

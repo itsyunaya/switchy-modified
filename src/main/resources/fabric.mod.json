@@ -27,6 +27,7 @@
 		"${compatId}": "${version}",
 		"${compatUiId}": "${version}",
 		"${cardinalId}": "${version}",
-		"${cardinalUiId}": "${version}"
+		"${cardinalUiId}": "${version}",
+		"fabric-permissions-api-v0": "*"
 	}
 }

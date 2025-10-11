@@ -29,7 +29,8 @@
 		"minecraft": ">=${mc}",
 		"fabricloader": ">=${fl}",
 		"fabric-api": ">=${fapi}",
-		"server_translations_api": ">=${serverTranslationsApi}"
+		"server_translations_api": ">=${serverTranslationsApi}",
+		"fabric-permissions-api-v0": "*"
 	},
 	"entrypoints": {
 		"server": [

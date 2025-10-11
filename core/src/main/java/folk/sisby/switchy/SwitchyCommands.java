@@ -11,8 +11,9 @@ import folk.sisby.switchy.util.SwitchyCommand;
 import net.minecraft.command.CommandRegistryAccess;
 import net.minecraft.server.command.CommandManager;
 import net.minecraft.server.command.ServerCommandSource;
-import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.util.Identifier;
+
+import me.lucko.fabric.api.permissions.v0.Permissions;
 
 import java.util.HashMap;
 import java.util.List;
@@ -53,11 +54,12 @@ public class SwitchyCommands {
 	static {
 		SwitchyEvents.COMMAND_INIT.register((switchyRoot, helpTextRegistry) -> {
 			switchyRoot.then(CommandManager.literal("help").executes(c -> execute(c, (pl, pr, f) -> SwitchyApi.displayHelp(pl, f))));
-			switchyRoot.then(CommandManager.literal("list").executes(c -> execute(c, (pl, pr, f) -> SwitchyApi.listPresets(pr, f))));
-			switchyRoot.then(CommandManager.literal("new")
+			switchyRoot.then(CommandManager.literal("list")
+				.executes(c -> execute(c, (pl, pr, f) -> SwitchyApi.listPresets(pr, f))));
+			switchyRoot.then(CommandManager.literal("new").requires(Permissions.require("switchy.commands.new"))
 				.then(CommandManager.argument("name", StringArgumentType.word())
 					.executes(c -> execute(c, (pl, pr, f) -> SwitchyApi.newPreset(pl ,pr, f, c.getArgument("name", String.class))))));
-			switchyRoot.then(CommandManager.literal("set")
+			switchyRoot.then(CommandManager.literal("set").requires(Permissions.require("switchy.commands.set"))
 				.then(ARG_SWITCH_SET_PRESET));
 			switchyRoot.then(CommandManager.literal("delete")
 				.then(SwitchyCommand.presetArgument(false)
