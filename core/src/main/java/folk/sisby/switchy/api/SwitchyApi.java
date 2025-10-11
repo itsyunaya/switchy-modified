@@ -187,15 +187,10 @@ public class SwitchyApi {
 	 */
 	public static SwitchyFeedbackStatus renamePreset(ServerPlayerEntity player, SwitchyPresets presets, Consumer<Text> feedback, String name, String newName) {
 		try {
-			if (Permissions.check(player, "switchy.commands.rename")) {
 				presets.renamePreset(name, newName);
 				feedback.accept(success("commands.switchy.rename.success", literal(name), literal(newName)));
 				logAction(player, "renamePreset: renamed preset " + name + " to " + newName);
 				return SwitchyFeedbackStatus.SUCCESS;
-			} else {
-				return SwitchyFeedbackStatus.FAIL;
-			}
-
 		} catch (InvalidWordException ignored) {
 			feedback.accept(invalid("commands.switchy.rename.fail.invalid"));
 			return SwitchyFeedbackStatus.INVALID;

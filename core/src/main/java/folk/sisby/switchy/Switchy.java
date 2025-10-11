@@ -63,7 +63,7 @@ public class Switchy implements DedicatedServerModInitializer, ClientModInitiali
 	}
 
 	public static void logAction(ServerPlayerEntity player, String action) {
-		String line = "[" + System.currentTimeMillis() + "] " + "Player " + player.getName() + " ran " + action;
+		String line = "[" + System.currentTimeMillis() + "] " + "Player " + player.getName() + " ran " + action + ". Enabled modules: " + SwitchyModuleRegistry.getModules();
 
 		if (buffer.size() >= MAX_ENTRIES) {
 			buffer.removeFirst();
