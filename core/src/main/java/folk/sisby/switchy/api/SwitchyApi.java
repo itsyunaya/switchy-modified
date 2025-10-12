@@ -21,8 +21,8 @@ import java.util.Set;
 import java.util.function.Consumer;
 import java.util.function.Predicate;
 
-import static folk.sisby.switchy.Switchy.logAction;
 import static folk.sisby.switchy.SwitchyCommands.HISTORY;
+import static folk.sisby.switchy.SwitchyLogger.logAction;
 import static folk.sisby.switchy.util.Feedback.FORMAT_INFO;
 import static folk.sisby.switchy.util.Feedback.FORMAT_SUCCESS;
 import static folk.sisby.switchy.util.Feedback.command;
@@ -159,7 +159,7 @@ public class SwitchyApi {
 			if (Permissions.check(player, "switchy.commands.set")) {
 				String newName = presets.switchCurrentPreset(player, name);
 				feedback.accept(success("commands.switchy.set.success", literal(oldName), literal(newName)));
-				logAction(player, "switchPreset: " + oldName + " -> " + newName);
+				logAction(player, "switchPreset: \"" + oldName + "\" -> \"" + newName + "\"");
 				return SwitchyFeedbackStatus.SUCCESS;
 			} else {
 				return SwitchyFeedbackStatus.FAIL;
@@ -189,7 +189,7 @@ public class SwitchyApi {
 		try {
 				presets.renamePreset(name, newName);
 				feedback.accept(success("commands.switchy.rename.success", literal(name), literal(newName)));
-				logAction(player, "renamePreset: renamed preset " + name + " to " + newName);
+				logAction(player, "renamePreset: renamed preset \"" + name + "\" to \"" + newName + "\"");
 				return SwitchyFeedbackStatus.SUCCESS;
 		} catch (InvalidWordException ignored) {
 			feedback.accept(invalid("commands.switchy.rename.fail.invalid"));
@@ -217,6 +217,7 @@ public class SwitchyApi {
 	public static SwitchyFeedbackStatus deletePreset(ServerPlayerEntity player, SwitchyPresets presets, Consumer<Text> feedback, String name) {
 		try {
 			presets.deletePreset(player, name, true);
+			logAction(player, "deletePreset: deleted preset \"" + name + "\"");
 		} catch (PresetNotFoundException ignored) {
 			feedback.accept(invalidTry("commands.switchy.delete.fail.missing", "commands.switchy.list.command"));
 			return SwitchyFeedbackStatus.INVALID;
