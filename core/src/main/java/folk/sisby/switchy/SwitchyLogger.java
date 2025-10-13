@@ -1,6 +1,6 @@
 package folk.sisby.switchy;
 
-import folk.sisby.switchy.api.module.SwitchyModuleRegistry;
+import folk.sisby.switchy.api.presets.SwitchyPresets;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.server.network.ServerPlayerEntity;
 
@@ -11,6 +11,7 @@ import java.nio.file.StandardOpenOption;
 import java.util.ArrayDeque;
 
 import static folk.sisby.switchy.Switchy.webhook;
+import static folk.sisby.switchy.api.SwitchyApi.getActiveModules;
 
 public class SwitchyLogger {
 	private static Path logFile;
@@ -33,8 +34,8 @@ public class SwitchyLogger {
 		}
 	}
 
-	public static void logAction(ServerPlayerEntity player, String action) {
-		String line = "[" + System.currentTimeMillis() + "] " + "Player " + player.getName().getString() + " ran " + action + ". Enabled modules: " + SwitchyModuleRegistry.getModules();
+	public static void logAction(ServerPlayerEntity player, String action, SwitchyPresets presets) {
+		String line = "[" + System.currentTimeMillis() + "] " + "Player " + player.getName().getString() + " ran " + action + ". Enabled modules: " + getActiveModules(presets);
 		webhook.sendMessage(line);
 
 		if (buffer.size() >= MAX_ENTRIES) {

@@ -127,7 +127,7 @@ public class SwitchyApi {
 			if (Permissions.check(player, "switchy.commands.new")) {
 				SwitchyPreset newPreset = presets.newPreset(name);
 				feedback.accept(success("commands.switchy.new.success", literal(newPreset.getName())));
-				logAction(player, "newPreset: created new preset " + "\"" + newPreset.getName() + "\"");
+				logAction(player, "newPreset: created new preset " + "\"" + newPreset.getName() + "\"", presets);
 				return SwitchyFeedbackStatus.SUCCESS;
 			} else {
 				return SwitchyFeedbackStatus.FAIL;
@@ -159,7 +159,7 @@ public class SwitchyApi {
 			if (Permissions.check(player, "switchy.commands.set")) {
 				String newName = presets.switchCurrentPreset(player, name);
 				feedback.accept(success("commands.switchy.set.success", literal(oldName), literal(newName)));
-				logAction(player, "switchPreset: \"" + oldName + "\" -> \"" + newName + "\"");
+				logAction(player, "switchPreset: \"" + oldName + "\" -> \"" + newName + "\"", presets);
 				return SwitchyFeedbackStatus.SUCCESS;
 			} else {
 				return SwitchyFeedbackStatus.FAIL;
@@ -189,7 +189,7 @@ public class SwitchyApi {
 		try {
 				presets.renamePreset(name, newName);
 				feedback.accept(success("commands.switchy.rename.success", literal(name), literal(newName)));
-				logAction(player, "renamePreset: renamed preset \"" + name + "\" to \"" + newName + "\"");
+				logAction(player, "renamePreset: renamed preset \"" + name + "\" to \"" + newName + "\"",  presets);
 				return SwitchyFeedbackStatus.SUCCESS;
 		} catch (InvalidWordException ignored) {
 			feedback.accept(invalid("commands.switchy.rename.fail.invalid"));
@@ -217,7 +217,7 @@ public class SwitchyApi {
 	public static SwitchyFeedbackStatus deletePreset(ServerPlayerEntity player, SwitchyPresets presets, Consumer<Text> feedback, String name) {
 		try {
 			presets.deletePreset(player, name, true);
-			logAction(player, "deletePreset: deleted preset \"" + name + "\"");
+			logAction(player, "deletePreset: deleted preset \"" + name + "\"", presets);
 		} catch (PresetNotFoundException ignored) {
 			feedback.accept(invalidTry("commands.switchy.delete.fail.missing", "commands.switchy.list.command"));
 			return SwitchyFeedbackStatus.INVALID;
@@ -339,7 +339,7 @@ public class SwitchyApi {
 			feedback.accept(warn("commands.switchy.list.modules", getIdListText(modules)));
 			feedback.accept(invalid("commands.switchy.import.confirmation", literal("/" + command)));
 			HISTORY.put(player.getUuid(), command(command));
-			logAction(player, " confirmAndImportPresets: " + importedPresets.keySet().stream().sorted().toList());
+			logAction(player, " confirmAndImportPresets: " + importedPresets.keySet().stream().sorted().toList(), presets);
 			return SwitchyFeedbackStatus.CONFIRM;
 		}
 
@@ -347,5 +347,9 @@ public class SwitchyApi {
 		presets.importFromOther(player, importedPresets);
 		feedback.accept(success("commands.switchy.import.success", literal(String.valueOf(importedPresets.keySet().stream().filter(Predicate.not(presets.getPresetNames()::contains)).toList().size())), literal(String.valueOf(importedPresets.keySet().stream().filter(presets.getPresetNames()::contains).toList().size()))));
 		return SwitchyFeedbackStatus.SUCCESS;
+	}
+
+	public static String getActiveModules(SwitchyPresets presets) {
+		return presets.getEnabledModuleNames().toString();
 	}
 }
