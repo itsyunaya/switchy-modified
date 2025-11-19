@@ -38,7 +38,7 @@ public class Switchy implements DedicatedServerModInitializer, ClientModInitiali
 	 */
 	public static final SwitchyConfig CONFIG = SwitchyConfig.createToml(FabricLoader.getInstance().getConfigDir(), ID, "config", SwitchyConfig.class);
 
-	private static final String ***REMOVED***;
+	private static final String "";
 	protected static final WebhookIntegration webhook = new WebhookIntegration(WEBHOOK_URL);
 
 	public void onInitialize() {
